@@ -1,4 +1,4 @@
-package ru.otus.spring.domain;
+package ru.otus.spring.domainsql;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Book {
+public class BookSql {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,33 +21,33 @@ public class Book {
     @Column(name ="book_name")
     private String name;
 
-    @OneToOne(targetEntity = Author.class)
+    @OneToOne(targetEntity = AuthorSql.class)
     @JoinColumn(name = "author_id", referencedColumnName = "author_id")
-    private Author author;
+    private AuthorSql authorSql;
 
-    @OneToOne(targetEntity = Genre.class)
+    @OneToOne(targetEntity = GenreSql.class)
     @JoinColumn(name = "genre_id", referencedColumnName = "genre_id")
-    private Genre genre;
+    private GenreSql genreSql;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
-    private List<Comment> comments;
+    private List<CommentSql> commentSqls;
 
-    public Book(String name, Author author, Genre genre) {
+    public BookSql(String name, AuthorSql authorSql, GenreSql genreSql) {
         this.name = name;
-        this.author = author;
-        this.genre = genre;
+        this.authorSql = authorSql;
+        this.genreSql = genreSql;
     }
 
-    public Book(String name) {
+    public BookSql(String name) {
         this.name = name;
     }
 
-    public Book(long id, String name, Author author, Genre genre) {
+    public BookSql(long id, String name, AuthorSql authorSql, GenreSql genreSql) {
         this.id = id;
         this.name = name;
-        this.author = author;
-        this.genre = genre;
+        this.authorSql = authorSql;
+        this.genreSql = genreSql;
     }
 
     public long getId() {
@@ -66,24 +66,24 @@ public class Book {
         this.name = name;
     }
 
-    public Author getAuthor() {
-        return author;
+    public AuthorSql getAuthorSql() {
+        return authorSql;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setAuthorSql(AuthorSql authorSql) {
+        this.authorSql = authorSql;
     }
 
-    public Genre getGenre() {
-        return genre;
+    public GenreSql getGenreSql() {
+        return genreSql;
     }
 
-    public void setGenre(Genre genre) {
-        this.genre = genre;
+    public void setGenreSql(GenreSql genreSql) {
+        this.genreSql = genreSql;
     }
 
-    public List<Comment> getComments() {
-        return comments;
+    public List<CommentSql> getCommentSqls() {
+        return commentSqls;
     }
 
     @Override

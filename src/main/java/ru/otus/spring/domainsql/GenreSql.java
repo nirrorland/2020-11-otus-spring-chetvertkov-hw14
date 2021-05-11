@@ -1,4 +1,4 @@
-package ru.otus.spring.domain;
+package ru.otus.spring.domainsql;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Genre {
+public class GenreSql {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class Genre {
         this.name = name;
     }
 
-    public Genre(String name) {
+    public GenreSql(String name) {
         this.name = name;
     }
 

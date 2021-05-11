@@ -5,16 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import ru.otus.spring.domain.Author;
-import ru.otus.spring.domain.Book;
-import ru.otus.spring.domain.Comment;
-import ru.otus.spring.domain.Genre;
+import ru.otus.spring.domainsql.AuthorSql;
+import ru.otus.spring.domainsql.BookSql;
+import ru.otus.spring.domainsql.CommentSql;
+import ru.otus.spring.domainsql.GenreSql;
 import ru.otus.spring.service.BookStorage;
 import ru.otus.spring.service.ConsoleIOService;
 
-import javax.transaction.Transactional;
 import java.sql.SQLException;
 import java.util.List;
+
 
 @ShellComponent
 public class ConsoleCmd {
@@ -32,10 +32,10 @@ public class ConsoleCmd {
 
     @ShellMethod(value = "List all authors", key = {"la", "list-authors"})
     public void listAuthors() {
-        List<Author> authors = bookStorage.getAllAuthors();
-        if ((authors != null) && (authors.size() > 0)) {
-            for (Author author : authors) {
-                consoleIOService.out(author.getName());
+        List<AuthorSql> authorsSql = bookStorage.getAllAuthors();
+        if ((authorsSql != null) && (authorsSql.size() > 0)) {
+            for (AuthorSql authorSql : authorsSql) {
+                consoleIOService.out(authorSql.getName());
             }
         } else {
             consoleIOService.out("No authors");
@@ -44,11 +44,11 @@ public class ConsoleCmd {
 
     @ShellMethod(value = "List all genres", key = {"lg", "list-genres"})
     public void listGenres() {
-        List<Genre> genres = bookStorage.getAllGenres();
+        List<GenreSql> genreSqls = bookStorage.getAllGenres();
 
-        if ((genres != null) && (genres.size() > 0)) {
-            for (Genre genre : genres) {
-                consoleIOService.out(genre.getName());
+        if ((genreSqls != null) && (genreSqls.size() > 0)) {
+            for (GenreSql genreSql : genreSqls) {
+                consoleIOService.out(genreSql.getName());
             }
         } else {
             consoleIOService.out("No genres");
@@ -57,11 +57,11 @@ public class ConsoleCmd {
 
     @ShellMethod(value = "List all books", key = {"lb", "list-books"})
     public void listBooks() {
-        List<Book> books = bookStorage.getAllBooks();
+        List<BookSql> booksSql = bookStorage.getAllBooks();
 
-        if ((books != null) && (books.size() > 0)) {
-            for (Book book : books) {
-                consoleIOService.out(book.toString() + " || GENRE=" + book.getGenre().getName() + " || AUTHOR=" + book.getAuthor().getName());
+        if ((booksSql != null) && (booksSql.size() > 0)) {
+            for (BookSql bookSql : booksSql) {
+                consoleIOService.out(bookSql.toString() + " || GENRE=" + bookSql.getGenreSql().getName() + " || AUTHOR=" + bookSql.getAuthorSql().getName());
             }
         } else {
             consoleIOService.out("No books");
@@ -113,11 +113,11 @@ public class ConsoleCmd {
     @ShellMethod(value = "View comments for {(String bookName)}", key = {"vc", "view-comments"})
     public void viewCommentsForBook(@ShellOption(defaultValue = NOVALUE) String bookName) {
         if (!bookName.equals(NOVALUE)) {
-            List<Comment> comments = bookStorage.getCommentsForBook(bookName);
+            List<CommentSql> commentSqls = bookStorage.getCommentsForBook(bookName);
 
-            if ((comments != null) && (comments.size() > 0)) {
-                for (Comment comment : comments) {
-                    consoleIOService.out(comment.toString());
+            if ((commentSqls != null) && (commentSqls.size() > 0)) {
+                for (CommentSql commentSql : commentSqls) {
+                    consoleIOService.out(commentSql.toString());
                 }
             } else {
                 consoleIOService.out("No comments for this book");

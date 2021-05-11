@@ -1,4 +1,4 @@
-package ru.otus.spring.domain;
+package ru.otus.spring.domainsql;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Author {
+public class AuthorSql {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="author_id", unique = true, nullable = false)
@@ -28,7 +28,7 @@ public class Author {
         this.name = name;
     }
 
-    public Author(String name) {
+    public AuthorSql(String name) {
         this.name = name;
     }
 

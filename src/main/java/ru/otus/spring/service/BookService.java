@@ -1,20 +1,20 @@
 package ru.otus.spring.service;
 
-import ru.otus.spring.domain.Book;
+import ru.otus.spring.domainsql.BookSql;
 
 import java.util.List;
 
 public interface BookService {
 
-    Book getById(long id);
+    BookSql getById(long id);
 
-    Book getByName(String name);
+    BookSql getByName(String name);
 
-    List<Book> getAll();
+    List<BookSql> getAll();
 
-    void insert(Book book);
+    void insert(BookSql bookSql);
 
-    void update(Book book);
+    void update(BookSql bookSql);
 
     void deleteById(long id);
 }

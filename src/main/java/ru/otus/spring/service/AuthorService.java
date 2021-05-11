@@ -1,14 +1,14 @@
 package ru.otus.spring.service;
 
-import ru.otus.spring.domain.Author;
+import ru.otus.spring.domainsql.AuthorSql;
 
 import java.util.List;
 
 public interface AuthorService {
 
-    Author getById(int id);
+    AuthorSql getById(int id);
 
-    List<Author> getAll();
+    List<AuthorSql> getAll();
 
-    Author getByName(String name);
+    AuthorSql getByName(String name);
 }

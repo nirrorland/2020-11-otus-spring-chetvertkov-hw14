@@ -7,6 +7,10 @@ spring:
     schema: schema.sql
     data: data.sql
 
+  data:
+    mongodb:
+      database: bookshelf_test
+
   h2:
     console:
       enabled: true

@@ -1,4 +1,4 @@
-package ru.otus.spring.domain;
+package ru.otus.spring.domainsql;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "comments")
-public class Comment     {
+public class CommentSql {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,13 +20,13 @@ public class Comment     {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "book_id")
-    private Book book;
+    private BookSql bookSql;
 
     @Column(name = "text", nullable = false, unique = false)
     private String text;
 
-    public Comment(Book book, String text) {
-        this.book = book;
+    public CommentSql(BookSql bookSql, String text) {
+        this.bookSql = bookSql;
         this.text = text;
     }
 

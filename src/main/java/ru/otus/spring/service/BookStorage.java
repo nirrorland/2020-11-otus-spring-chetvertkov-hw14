@@ -1,19 +1,20 @@
 package ru.otus.spring.service;
 
-import ru.otus.spring.domain.Author;
-import ru.otus.spring.domain.Book;
-import ru.otus.spring.domain.Comment;
-import ru.otus.spring.domain.Genre;
+
+import ru.otus.spring.domainsql.AuthorSql;
+import ru.otus.spring.domainsql.BookSql;
+import ru.otus.spring.domainsql.CommentSql;
+import ru.otus.spring.domainsql.GenreSql;
 
 import java.util.List;
 
 public interface BookStorage {
 
-    List<Author> getAllAuthors();
+    List<AuthorSql> getAllAuthors();
 
-    List<Genre> getAllGenres();
+    List<GenreSql> getAllGenres();
 
-    List<Book> getAllBooks();
+    List<BookSql> getAllBooks();
 
     void insertBook(String bookName, String authorName, String genreName);
 
@@ -23,7 +24,7 @@ public interface BookStorage {
 
     void addComment(String bookName, String text);
 
-    List<Comment> getCommentsForBook(String bookName);
+    List<CommentSql> getCommentsForBook(String bookName);
 
     void deleteCommentById(long id);
 }

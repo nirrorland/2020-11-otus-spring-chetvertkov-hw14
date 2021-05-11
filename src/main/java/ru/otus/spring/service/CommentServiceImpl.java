@@ -2,31 +2,31 @@ package ru.otus.spring.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.otus.spring.dao.CommentDao;
-import ru.otus.spring.domain.Comment;
+import ru.otus.spring.daosql.CommentSqlDao;
+import ru.otus.spring.domainsql.CommentSql;
 
 import javax.transaction.Transactional;
 
 @Service
 public class CommentServiceImpl implements CommentService{
 
-    private final CommentDao commentRepository;
+    private final CommentSqlDao commentRepository;
 
     @Autowired
-    public CommentServiceImpl(CommentDao commentDaookDao) {
-        this.commentRepository = commentDaookDao;
+    public CommentServiceImpl(CommentSqlDao commentDaookSqlDao) {
+        this.commentRepository = commentDaookSqlDao;
     }
 
     @Override
     @Transactional
-    public void addComment(Comment comment) {
-        commentRepository.saveAndFlush(comment);
+    public void addComment(CommentSql commentSql) {
+        commentRepository.saveAndFlush(commentSql);
     }
 
     @Override
     @Transactional
-    public void deleteComment(Comment comment) {
-        commentRepository.deleteById(comment.getId());
+    public void deleteComment(CommentSql commentSql) {
+        commentRepository.deleteById(commentSql.getId());
     }
 
     @Override
@@ -36,7 +36,7 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public Comment findCommentByID(long id) {
+    public CommentSql findCommentByID(long id) {
        return commentRepository.findById(id).orElse(null);
     }
 }

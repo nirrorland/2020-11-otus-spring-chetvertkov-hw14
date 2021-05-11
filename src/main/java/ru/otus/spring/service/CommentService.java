@@ -1,15 +1,16 @@
 package ru.otus.spring.service;
 
-import ru.otus.spring.domain.Comment;
+
+import ru.otus.spring.domainsql.CommentSql;
 
 public interface CommentService {
 
-    void addComment(Comment comment);
+    void addComment(CommentSql commentSql);
 
-    void deleteComment(Comment comment);
+    void deleteComment(CommentSql commentSql);
 
     void deleteById(long id);
 
-    Comment findCommentByID(long id);
+    CommentSql findCommentByID(long id);
 
 }

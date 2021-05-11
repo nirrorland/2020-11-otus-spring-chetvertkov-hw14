@@ -1,14 +1,16 @@
 package ru.otus.spring.service;
 
-import ru.otus.spring.domain.Genre;
+
+import ru.otus.spring.domainsql.GenreSql;
+
 import java.util.List;
 
 public interface GenreService {
 
-    Genre getById(int id);
+    GenreSql getById(int id);
 
-    List<Genre> getAll();
+    List<GenreSql> getAll();
 
-    Genre getByName(String name);
+    GenreSql getByName(String name);
 
 }

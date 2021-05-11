@@ -2,10 +2,10 @@ package ru.otus.spring.service;
 
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
-import ru.otus.spring.domain.Author;
-import ru.otus.spring.domain.Book;
-import ru.otus.spring.domain.Comment;
-import ru.otus.spring.domain.Genre;
+import ru.otus.spring.domainsql.AuthorSql;
+import ru.otus.spring.domainsql.BookSql;
+import ru.otus.spring.domainsql.CommentSql;
+import ru.otus.spring.domainsql.GenreSql;
 import ru.otus.spring.event.EventMessage;
 import ru.otus.spring.event.EventPublisher;
 
@@ -31,95 +31,95 @@ public class BookStorageImpl implements BookStorage {
     }
 
     @Override
-    public List<Author> getAllAuthors() {
+    public List<AuthorSql> getAllAuthors() {
         return authorService.getAll();
     }
 
     @Override
-    public List<Genre> getAllGenres() {
+    public List<GenreSql> getAllGenres() {
         return genreService.getAll();
     }
 
     @Override
-    public List<Book> getAllBooks() {
+    public List<BookSql> getAllBooks() {
         return bookService.getAll();
     }
 
     @Override
     public void insertBook(String bookName, String authorName, String genreName) {
-        Author author = authorService.getByName(authorName);
-        Genre genre = genreService.getByName(genreName);
-        Book oldBook = bookService.getByName(bookName);
+        AuthorSql authorSql = authorService.getByName(authorName);
+        GenreSql genreSql = genreService.getByName(genreName);
+        BookSql oldBookSql = bookService.getByName(bookName);
 
 
         boolean isNotReadyForInsertion = false;
 
-        if (author == null) {
+        if (authorSql == null) {
             isNotReadyForInsertion = true;
             eventsPublisher.publishErrorEvent(EventMessage.EM_AUTHOR_NOT_FOUND);
         }
 
-        if (genre == null) {
+        if (genreSql == null) {
             isNotReadyForInsertion = true;
             eventsPublisher.publishErrorEvent(EventMessage.EM_GENRE_NOT_FOUND);
         }
 
-        if (oldBook != null) {
+        if (oldBookSql != null) {
             isNotReadyForInsertion = true;
             eventsPublisher.publishErrorEvent(EventMessage.EM_BOOKNAME_ALREADY_EXISTS);
         }
 
         if (!isNotReadyForInsertion) {
-            Book book = new Book(bookName, author, genre);
-            bookService.insert(book);
+            BookSql bookSql = new BookSql(bookName, authorSql, genreSql);
+            bookService.insert(bookSql);
         }
     }
 
     @Override
     public void updateBook(String oldBookName, String newBookName, String newAuthorName, String newGenreName) {
-        Author author = authorService.getByName(newAuthorName);
-        Genre genre = genreService.getByName(newGenreName);
-        Book oldBook = bookService.getByName(oldBookName);
+        AuthorSql authorSql = authorService.getByName(newAuthorName);
+        GenreSql genreSql = genreService.getByName(newGenreName);
+        BookSql oldBookSql = bookService.getByName(oldBookName);
 
 
         boolean isNotReadyForUpdate = false;
 
-        if (author == null) {
+        if (authorSql == null) {
             isNotReadyForUpdate = true;
             eventsPublisher.publishErrorEvent(EventMessage.EM_AUTHOR_NOT_FOUND);
         }
 
-        if (genre == null) {
+        if (genreSql == null) {
             isNotReadyForUpdate = true;
             eventsPublisher.publishErrorEvent(EventMessage.EM_GENRE_NOT_FOUND);
         }
 
-        if (oldBook == null) {
+        if (oldBookSql == null) {
             isNotReadyForUpdate = true;
             eventsPublisher.publishErrorEvent(EventMessage.EM_BOOK_NOT_FOUND);
         }
 
         if (!isNotReadyForUpdate) {
-            Book book = new Book(newBookName, author, genre);
-            book.setId(oldBook.getId());
-            bookService.update(book);
+            BookSql bookSql = new BookSql(newBookName, authorSql, genreSql);
+            bookSql.setId(oldBookSql.getId());
+            bookService.update(bookSql);
         }
     }
 
     @Override
     public void deleteBook(String bookName) {
-        Book book = bookService.getByName(bookName);
+        BookSql bookSql = bookService.getByName(bookName);
 
 
         boolean isNotReadyForDelete = false;
 
-        if (book == null) {
+        if (bookSql == null) {
             isNotReadyForDelete = true;
             eventsPublisher.publishErrorEvent(EventMessage.EM_BOOK_NOT_FOUND);
         }
 
         if (!isNotReadyForDelete) {
-            bookService.deleteById(book.getId());
+            bookService.deleteById(bookSql.getId());
         }
     }
 
@@ -127,33 +127,33 @@ public class BookStorageImpl implements BookStorage {
     @Transactional
     public void addComment(String bookName, String text) {
         boolean isNotReadyForCommentInsertion = false;
-        Book book = bookService.getByName(bookName);
+        BookSql bookSql = bookService.getByName(bookName);
 
-        if (book == null) {
+        if (bookSql == null) {
             isNotReadyForCommentInsertion = true;
             eventsPublisher.publishErrorEvent(EventMessage.EM_BOOK_NOT_FOUND);
         }
 
         if (!isNotReadyForCommentInsertion) {
-            Comment comment = new Comment(book, text);
-            commentService.addComment(comment);
+            CommentSql commentSql = new CommentSql(bookSql, text);
+            commentService.addComment(commentSql);
         }
     }
 
     @Override
     @Transactional
-    public List<Comment> getCommentsForBook(String bookName) {
+    public List<CommentSql> getCommentsForBook(String bookName) {
         boolean isNotReady = false;
-        Book book = bookService.getByName(bookName);
+        BookSql bookSql = bookService.getByName(bookName);
 
-        if (book == null) {
+        if (bookSql == null) {
             isNotReady = true;
             eventsPublisher.publishErrorEvent(EventMessage.EM_BOOK_NOT_FOUND);
         }
 
         if (!isNotReady) {
-            Hibernate.initialize(book.getComments());
-            return book.getComments();
+            Hibernate.initialize(bookSql.getCommentSqls());
+            return bookSql.getCommentSqls();
         } else {
             return null;
         }
@@ -162,10 +162,10 @@ public class BookStorageImpl implements BookStorage {
     @Override
     @Transactional
     public void deleteCommentById(long id) {
-        Comment comment = commentService.findCommentByID(id);
+        CommentSql commentSql = commentService.findCommentByID(id);
 
-        if (comment != null) {
-            commentService.deleteById(comment.getId());
+        if (commentSql != null) {
+            commentService.deleteById(commentSql.getId());
 
         }
     }
