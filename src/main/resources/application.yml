@@ -10,6 +10,11 @@ spring:
   data:
     mongodb:
       database: bookshelf
+      port: 27017
+
+  batch:
+    job:
+      enabled: false
 
   h2:
     console:

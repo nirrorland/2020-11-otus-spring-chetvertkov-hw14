@@ -11,6 +11,7 @@ import ru.otus.spring.domainsql.CommentSql;
 import ru.otus.spring.domainsql.GenreSql;
 import ru.otus.spring.service.BookStorage;
 import ru.otus.spring.service.ConsoleIOService;
+import ru.otus.spring.service.ConsoleMigrationService;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -21,13 +22,15 @@ public class ConsoleCmd {
 
     final private BookStorage bookStorage;
     final private ConsoleIOService consoleIOService;
+    final private ConsoleMigrationService consoleMigrationService;
 
     private static final String NOVALUE = "NOVALUE";
 
     @Autowired
-    public ConsoleCmd(BookStorage bookStorage, ConsoleIOService consoleIOService) {
+    public ConsoleCmd(BookStorage bookStorage, ConsoleIOService consoleIOService, ConsoleMigrationService consoleMigrationService) {
         this.bookStorage = bookStorage;
         this.consoleIOService = consoleIOService;
+        this.consoleMigrationService = consoleMigrationService;
     }
 
     @ShellMethod(value = "List all authors", key = {"la", "list-authors"})
@@ -139,6 +142,17 @@ public class ConsoleCmd {
     @ShellMethod(value = "Open H2 console", key = {"h2c", "h2-console"})
     public void h2CpnsoleOpen() throws SQLException {
         Console.main();
+    }
+
+    @ShellMethod(value = "start migration", key = {"sm", "start"})
+    private void runMigration() {
+        consoleMigrationService.startMigration();
+
+    }
+
+    @ShellMethod(value = "Restart migration", key = {"rm", "restart"})
+    private void restartMigration() {
+        consoleMigrationService.restartMigration();
     }
 
 }
